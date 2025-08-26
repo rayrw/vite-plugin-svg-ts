@@ -2,6 +2,8 @@
 
 Load `.svg` files from a folder with **auto-generated TypeScript types** based on their file names.
 
+https://github.com/user-attachments/assets/2e6d7537-07a1-48ee-b9b3-5c2959535080
+
 ## Motivation
 
 This plugin was inspired by SvelteKit’s [generated types](https://svelte.dev/docs/kit/types#Generated-types).
@@ -44,8 +46,8 @@ Example: If you have `arrow-left.svg` and `arrow-right.svg` in your folder, the 
 ```ts
 declare module "virtual:svg-ts" {
   export type SvgName =
-		| 'arrow-left'
-		| 'arrow-right'
+    | 'arrow-left'
+    | 'arrow-right'
   const svgs: Record<SvgName, string>;
   export default svgs;
 }
