@@ -9,27 +9,6 @@ https://github.com/user-attachments/assets/2e6d7537-07a1-48ee-b9b3-5c2959535080
 This plugin was inspired by SvelteKit’s [generated types](https://svelte.dev/docs/kit/types#Generated-types).
 I wanted a way to load an entire folder of SVG files **with autocompletion for file names**, making icon imports more type-safe and developer-friendly.
 
-## Installation
-
-```bash
-npm install --save-dev vite-plugin-svg-ts
-```
-
-Add the plugin to your `vite.config.ts` and specify the folder containing your SVG files:
-
-```ts
-import { defineConfig } from 'vite';
-import svgTs from 'vite-plugin-svg-ts';
-
-export default defineConfig({
-  plugins: [
-    svgTs({
-      svgFolderPath: './src/lib/icons',
-    }),
-  ],
-});
-```
-
 ## How It Works
 
 When you add this plugin:
@@ -54,6 +33,34 @@ declare module "virtual:svg-ts" {
 ```
 
 And you can safely reference them in your code with autocomplete.
+
+## Installation
+
+```bash
+npm install --save-dev vite-plugin-svg-ts
+```
+
+Add the plugin to your `vite.config.ts` and specify the folder containing your SVG files:
+
+```ts
+import { defineConfig } from 'vite';
+import svgTs from 'vite-plugin-svg-ts';
+
+export default defineConfig({
+  plugins: [
+    svgTs({
+      svgFolderPath: './src/lib/icons',
+    }),
+  ],
+});
+```
+
+The plugin generates types in the `.svg-ts` folder at the project root.
+It’s recommended to **add this folder to `.gitignore` and formatter config file:**
+
+```
+.svg-ts
+```
 
 ## SvelteKit Setup
 
@@ -80,19 +87,10 @@ const config = {
 export default config;
 ```
 
-### 2. Ignore generated files
-
-The plugin generates types in the `.svg-ts` folder at the project root.
-It’s recommended to **add this folder to `.gitignore` and formatter config file:**
-
-```
-.svg-ts
-```
-
-### 3. Keep CI builds working
+### 2. Keep CI builds working
 
 Since `.svg-ts` is ignored by Git, you’ll need to regenerate types in CI.
-Add the CLI to your `package.json` scripts (similar to how SvelteKit handles its generated types):
+Add the CLI command `svg-ts` to your `package.json` scripts (similar to how SvelteKit handles its generated types):
 
 ```json
 {
