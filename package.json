@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-svg-ts",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Vite Plugin for loading all svg files inside a folder with types.",
 	"keywords": [
 		"vite-plugin",
@@ -23,6 +23,9 @@
 	"files": [
 		"src"
 	],
+	"engine": {
+		"node": ">=20.1.0"
+	},
 	"scripts": {
 		"format": "biome format --write",
 		"lint": "biome lint"
