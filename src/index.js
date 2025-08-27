@@ -28,28 +28,28 @@ export default function svgTs(options) {
 		/**
 		 * Configure the dev server to listen to svg file changes and sync the types.
 		 */
-		configureServer({ watcher }) {
+		configureServer({ watcher, moduleGraph, reloadModule }) {
 			/**
 			 * Sync the types once when starting the dev server.
 			 */
 			syncTypes(svgFolderFullPath);
 
 			/**
-			 * Sync the types whenever svg file changes are detected.
+			 * Sync the types and virtual module whenever svg file changes are detected.
 			 */
 			watcher.on('all', (_, file) => {
 				if (file.startsWith(svgFolderFullPath) && /\.svg$/.test(file)) {
 					syncTypes(svgFolderFullPath);
+
+					/**
+					 * Reload the virtual module to include new changes
+					 */
+					const module = moduleGraph.getModuleById(resolvedVirtualModuleId);
+					if (module) {
+						reloadModule(module);
+					}
 				}
 			});
-		},
-		/**
-		 * Invalidate the virtual module whenever related file changes are detected.
-		 */
-		hotUpdate({ modules, file }) {
-			if (file.startsWith(svgFolderFullPath) && /\.svg$/.test(file)) {
-				return modules.filter(({ id }) => id === resolvedVirtualModuleId);
-			}
 		},
 		resolveId(id) {
 			if (id === virtualModuleId) {
