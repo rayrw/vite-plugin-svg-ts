@@ -55,8 +55,8 @@ It’s recommended to **add this folder to `.gitignore` and formatter config fil
 
 ### Step3: Framework specific setup
 
-- [SvelteKit](https://github.com/rayrw/vite-plugin-svg-ts/tree/main/examples/svelte)
-- [Waku (with RSC)](https://github.com/rayrw/vite-plugin-svg-ts/tree/main/examples/waku)
+- [SvelteKit](https://github.com/rayrw/vite-plugin-svg-ts/tree/main/examples/svelte#sveltekit-setup)
+- [Waku (with RSC)](https://github.com/rayrw/vite-plugin-svg-ts/blob/main/examples/waku/README.md#waku-setup)
 
 ## Roadmap / Todo
 
