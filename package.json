@@ -1,6 +1,6 @@
 {
 	"name": "vite-plugin-svg-ts",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Vite Plugin for loading all svg files inside a folder with types.",
 	"keywords": [
 		"vite-plugin",

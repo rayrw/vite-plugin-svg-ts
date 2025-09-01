@@ -2,12 +2,19 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 /**
+ * @typedef Options
+ * @type {object}
+ * @property {string} svgFolderPath
+ * @property {'?raw' | '?react' | (string & Record<never, never>)} importQuery
+ */
+
+/**
  * Returns the Vite plugin.
- * @param {{svgFolderPath: string}} options
- * @returns {import('vite').Plugin & { svgTsOptions: {svgFolderPath: string}}}
+ * @param {Options} options
+ * @returns {import('vite').Plugin & { svgTsOptions: Options}}
  */
 export default function svgTs(options) {
-	const { svgFolderPath } = options;
+	const { svgFolderPath, importQuery } = options;
 	const pluginName = 'svg-ts';
 	const virtualModuleId = `virtual:${pluginName}`;
 	const resolvedVirtualModuleId = '\0' + virtualModuleId;
@@ -16,6 +23,7 @@ export default function svgTs(options) {
 		throw new Error('svgFolderPath is not specified.');
 	}
 
+	const handledImportQuery = importQuery || '?raw';
 	const cwd = process.cwd();
 	const svgFolderFullPath = path.join(cwd, svgFolderPath);
 
@@ -28,7 +36,7 @@ export default function svgTs(options) {
 		/**
 		 * Configure the dev server to listen to svg file changes and sync the types.
 		 */
-		configureServer({ watcher, moduleGraph, reloadModule }) {
+		configureServer({ watcher, environments }) {
 			/**
 			 * Sync the types once when starting the dev server.
 			 */
@@ -44,9 +52,13 @@ export default function svgTs(options) {
 					/**
 					 * Reload the virtual module to include new changes
 					 */
-					const module = moduleGraph.getModuleById(resolvedVirtualModuleId);
-					if (module) {
-						reloadModule(module);
+					for (const environment of Object.values(environments)) {
+						const module = environment.moduleGraph.getModuleById(
+							resolvedVirtualModuleId,
+						);
+						if (module) {
+							environment.reloadModule(module);
+						}
 					}
 				}
 			});
@@ -66,7 +78,7 @@ export default function svgTs(options) {
 
 				const imports = svgFiles.map(
 					(file, index) =>
-						`import { default as svg$${index} } from '${svgFolderFullPath}/${file}?raw';`,
+						`import { default as svg$${index} } from '${svgFolderFullPath}/${file}${handledImportQuery}';`,
 				);
 
 				const assignments = svgFiles.map(
