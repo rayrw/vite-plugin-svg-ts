@@ -1,5 +1,7 @@
 # vite-plugin-svg-ts
 
+[![npm](https://img.shields.io/npm/v/vite-plugin-svg-ts.svg)](https://www.npmjs.com/package/vite-plugin-svg-ts)
+
 Load `.svg` files from a folder with **auto-generated TypeScript types** based on their file names.
 
 https://github.com/user-attachments/assets/2e6d7537-07a1-48ee-b9b3-5c2959535080
