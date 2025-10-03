@@ -59,8 +59,8 @@ export default function svgTs(options) {
 		load(id) {
 			if (id === resolvedVirtualModuleId) {
 				const svgFiles = fs
-					.readdirSync(svgFolderFullPath)
-					.filter((file) => file.endsWith('.svg'));
+					.readdirSync(svgFolderFullPath, { recursive: true })
+					.filter(isSvgFilePath);
 
 				const declaration = 'const svgs = {};';
 
@@ -106,13 +106,12 @@ function convertSvgName(file) {
  */
 export function syncTypes(svgFolderFullPath) {
 	const typeUnion = fs
-		.readdirSync(svgFolderFullPath)
-		.filter((file) => file.endsWith('.svg'))
+		.readdirSync(svgFolderFullPath, { recursive: true })
+		.filter(isSvgFilePath)
 		.map((file) => `\t\t| '${convertSvgName(file)}'`);
-	const code = typeUnion.join('\n');
+	const code = typeUnion.length === 0 ? 'never' : '\n' + typeUnion.join('\n');
 	const content = `declare module "virtual:svg-ts" {
-  export type SvgName =
-${code}
+  export type SvgName = ${code}
   const svgs: Record<SvgName, string>;
   export default svgs;
 }
@@ -122,6 +121,14 @@ ${code}
 		content,
 	);
 }
+
+/**
+ * Check if the entry returned by readdirSync is a svg file path
+ * @param {string | Buffer<ArrayBufferLike>} file
+ * @returns {file is string}
+ */
+const isSvgFilePath = (file) =>
+	typeof file === 'string' && file.endsWith('.svg');
 
 /**
  * Taken from https://github.com/sveltejs/kit/blob/%40sveltejs/package%402.5.0/packages/kit/src/core/sync/utils.js
