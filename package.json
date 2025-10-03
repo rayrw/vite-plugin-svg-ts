@@ -1,0 +1,37 @@
+{
+	"name": "vite-plugin-svg-ts",
+	"version": "0.0.2",
+	"description": "Vite Plugin for loading all svg files inside a folder with types.",
+	"keywords": [
+		"vite-plugin",
+		"vite",
+		"svg",
+		"typescript"
+	],
+	"author": "rayrw",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rayrw/vite-plugin-svg-ts.git"
+	},
+	"type": "module",
+	"main": "src/index.js",
+	"types": "src/index.d.ts",
+	"bin": {
+		"svg-ts": "src/cli.js"
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"format": "biome format --write",
+		"lint": "biome lint"
+	},
+	"peerDependencies": {
+		"vite": ">=2.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.2",
+		"@types/node": "^24.3.0"
+	}
+}
